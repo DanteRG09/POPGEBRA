@@ -247,17 +247,4 @@ public class PantallaBienvenida extends JFrame {
                 false);
     }
 
-
-
-    public static void main(
-            String[] args) {
-
-        SwingUtilities.invokeLater(
-                () -> {
-
-                    new PantallaBienvenida()
-                            .setVisible(true);
-
-                });
-    }
 }

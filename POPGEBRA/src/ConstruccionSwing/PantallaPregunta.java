@@ -206,15 +206,4 @@ public class PantallaPregunta extends JFrame {
         return boton;
     }
 
-
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-
-            new PantallaPregunta()
-                    .setVisible(true);
-
-        });
-    }
 }

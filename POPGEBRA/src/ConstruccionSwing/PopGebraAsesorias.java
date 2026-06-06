@@ -277,9 +277,4 @@ public class PopGebraAsesorias extends JFrame {
         return panelAsesorias;
     }
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new PopGebraAsesorias().setVisible(true);
-        });
-    }
 }

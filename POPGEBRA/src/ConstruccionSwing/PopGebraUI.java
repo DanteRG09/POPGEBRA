@@ -202,11 +202,4 @@ public class PopGebraUI extends JFrame {
         return linea;
     }
 
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            new PopGebraUI().setVisible(true);
-        });
-    }
 }

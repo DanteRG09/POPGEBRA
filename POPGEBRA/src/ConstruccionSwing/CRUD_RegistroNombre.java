@@ -214,10 +214,4 @@ public class CRUD_RegistroNombre extends JFrame{
         });
     }
     
-    
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {new CRUD_RegistroNombre().setVisible(true);});
-    }
-    
 }    

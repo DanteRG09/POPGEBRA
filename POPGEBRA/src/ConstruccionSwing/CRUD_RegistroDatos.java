@@ -216,10 +216,4 @@ public class CRUD_RegistroDatos extends JFrame{
         });
     }
     
-    
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {new CRUD_RegistroDatos().setVisible(true);});
-    }
-    
 }  

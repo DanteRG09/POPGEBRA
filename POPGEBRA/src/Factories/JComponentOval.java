@@ -142,8 +142,7 @@ public class JComponentOval extends JPanel{
 		default:
 			throw new IllegalArgumentException("Valor no válido de esquina");
 		}
-
 		return area;
 	}
-	
+    
 }

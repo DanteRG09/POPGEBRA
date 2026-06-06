@@ -6,19 +6,28 @@ package Factories;
 
 /**
  *
+ * @author etnad
+ */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+/**
+ *
  * @author Dante
  */
-import java.awt.Dimension;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import javax.swing.JTextField;
 
-import javax.swing.JButton;
 
-public class JComponentOvalBtn extends JButton{
+public class JComponentOvalTxtField extends JTextField{
 
 	private static final long serialVersionUID = 1L;
 	private int valorEsquinaOvalSI;
@@ -26,15 +35,16 @@ public class JComponentOvalBtn extends JButton{
 	private int valorEsquinaOvalII;
 	private int valorEsquinaOvalID;
 	
-	public JComponentOvalBtn(int valorEsquinaOvalSI, int valorEsquinaOvalSD, int valorEsquinaOvalII, int valorEsquinaOvalID){
-		this.setOpaque(false);
+	public JComponentOvalTxtField(int valorEsquinaOvalSI, int valorEsquinaOvalSD, int valorEsquinaOvalII, int valorEsquinaOvalID){
+		
+            this.setOpaque(false);
 		this.setBorder(null);
 		setValorEsquinaOvalSI(valorEsquinaOvalSI);
 		setValorEsquinaOvalSD(valorEsquinaOvalSD);
 		setValorEsquinaOvalII(valorEsquinaOvalII);
 		setValorEsquinaOvalID(valorEsquinaOvalID);
 	}
-	public JComponentOvalBtn(int valorOval){
+	public JComponentOvalTxtField(int valorOval){
 		this.setOpaque(false);
 		this.setBorder(null);
 		setValorEsquinaOvalSI(valorOval);
@@ -147,19 +157,5 @@ public class JComponentOvalBtn extends JButton{
 		return area;
 	}
 	
-     @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(80, 25);
-    }
-
-    @Override
-    public Dimension getMinimumSize() {
-        return getPreferredSize();
-    }
-
-    @Override
-    public Dimension getMaximumSize() {
-        return getPreferredSize();
-    }   
-        
 }
+

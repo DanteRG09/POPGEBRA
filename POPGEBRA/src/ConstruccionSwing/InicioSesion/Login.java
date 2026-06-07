@@ -1,59 +1,81 @@
 package ConstruccionSwing.InicioSesion;
 
+import ConstruccionSwing.AdminHome;
 import ConstruccionSwing.PopGebraAsesorias;
 import ConstruccionSwing.PopGebraUI;
+import Factories.JComponentOval;
+import Factories.JComponentOvalBtn;
+import GlobalConfig.TamañosColoresPosicion;
+import GlobalConfig.Texto;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Login {
+    private TamañosColoresPosicion valores = new TamañosColoresPosicion();
+    private Texto Fuente = new Texto();
+
     private JFrame VLogin;
+    private JComponentOval InterfazLogin;
+    private JPanel contenedorFormulario;
     private JTextField TXTFUsuario;
     private JPasswordField PWFContrasena;
+    private JComponentOvalBtn BTNIngresar;
 
     public void show() {
         VLogin = new JFrame("Iniciar Sesión");
-        VLogin.setSize(420, 320);
-        VLogin.setLocationRelativeTo(null);
-        VLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        VLogin.setLayout(new GridBagLayout());
+        VLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
+        VLogin.setSize(valores.getTamañoVentana(0), valores.getTamañoVentana(1));
+        InterfazLogin = new JComponentOval(60);
+        InterfazLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 40));
+        contenedorFormulario = new JPanel(new GridBagLayout());
+        contenedorFormulario.setOpaque(false);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 10, 10);
-        c.fill = GridBagConstraints.HORIZONTAL;
+
+        InterfazLogin.setPreferredSize(valores.getPosicionDelPanelRegistro());
 
         JLabel lblTitulo = new JLabel("Iniciar Sesión", SwingConstants.CENTER);
-        lblTitulo.setFont(new Font("Courier New", Font.BOLD, 28));
+        lblTitulo.setFont(new Font("Courier New", Font.BOLD, 45));
 
-        TXTFUsuario = new JTextField(20);
+        TXTFUsuario = new JTextField("Ingrese su usuario", 20);
         PWFContrasena = new JPasswordField(20);
+        BTNIngresar = new JComponentOvalBtn(30);
+        BTNIngresar.setText("INGRESAR");
 
-        JButton btnIngresar = new JButton("Ingresar");
+        TXTFUsuario.setHorizontalAlignment(JTextField.CENTER);
+        PWFContrasena.setHorizontalAlignment(JTextField.CENTER);
+        BTNIngresar.setPreferredSize(new Dimension(200, 50));
+
+        configurarPlaceholder(TXTFUsuario, "Ingrese su usuario");
+
+        VLogin.getContentPane().setBackground(Color.decode(valores.getColorFondo()));
+        InterfazLogin.setBackground(Color.decode(valores.getColorPanel()));
 
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
-        VLogin.add(lblTitulo, c);
+        c.insets = new Insets(0, 0, 0, 0);
+        contenedorFormulario.add(lblTitulo, c);
 
         c.gridy = 1;
-        c.gridwidth = 1;
-        VLogin.add(new JLabel("Usuario:"), c);
-        c.gridx = 1;
-        VLogin.add(TXTFUsuario, c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        VLogin.add(new JLabel("Contraseña:"), c);
-        c.gridx = 1;
-        VLogin.add(PWFContrasena, c);
-
-        c.gridx = 0;
-        c.gridy = 3;
         c.gridwidth = 2;
-        VLogin.add(btnIngresar, c);
+        c.insets = new Insets(10, 0, 10, 0);
+        contenedorFormulario.add(TXTFUsuario, c);
 
-        btnIngresar.addActionListener(e -> authenticateAndRoute());
+        c.gridy = 2;
+        contenedorFormulario.add(PWFContrasena, c);
 
+        c.gridy = 3;
+        c.insets = new Insets(20, 0, 0, 0);
+        contenedorFormulario.add(BTNIngresar, c);
+
+        InterfazLogin.add(contenedorFormulario);
+        VLogin.add(InterfazLogin);
+
+        BTNIngresar.addActionListener(e -> authenticateAndRoute());
+
+        VLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         VLogin.setVisible(true);
     }
 
@@ -61,7 +83,7 @@ public class Login {
         String usuario = TXTFUsuario.getText().trim();
         String contrasena = new String(PWFContrasena.getPassword()).trim();
 
-        if (usuario.isEmpty() || contrasena.isEmpty()) {
+        if (usuario.isEmpty() || contrasena.isEmpty() || usuario.equals("Ingrese su usuario")) {
             JOptionPane.showMessageDialog(VLogin,
                     "Por favor ingresa usuario y contraseña.",
                     "Campos incompletos",
@@ -82,8 +104,33 @@ public class Login {
         VLogin.dispose();
         if (tipo.equalsIgnoreCase("Alumno")) {
             new PopGebraUI().setVisible(true);
-        } else {
+        } else if (tipo.equalsIgnoreCase("Asesor")) {
             new PopGebraAsesorias().setVisible(true);
+        } else if (tipo.equalsIgnoreCase("Administrador") || tipo.equalsIgnoreCase("Admin")) {
+            new AdminHome().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(VLogin,
+                    "Tipo de usuario desconocido: " + tipo,
+                    "Autenticación fallida",
+                    JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void configurarPlaceholder(JTextField campo, String textoGuia) {
+        campo.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (campo.getText().equals(textoGuia)) {
+                    campo.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (campo.getText().trim().isEmpty()) {
+                    campo.setText(textoGuia);
+                }
+            }
+        });
     }
 }

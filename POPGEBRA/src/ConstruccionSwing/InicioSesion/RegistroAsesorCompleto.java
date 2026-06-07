@@ -85,29 +85,7 @@ public class RegistroAsesorCompleto {
     }
 
     private boolean registrarAsesor(String matricula) {
-        String sql = "INSERT INTO Asesor (Matricula, IdUsuario) VALUES (?, ?)";
-
-        try (Connection conexion = new MySQLConnect().conectarMySQL();
-             PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setString(1, matricula);
-            stmt.setString(2, idUsuario);
-            int filas = stmt.executeUpdate();
-
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(VAsesor,
-                        "Registro de asesor completado correctamente.",
-                        "Registro exitoso",
-                        JOptionPane.INFORMATION_MESSAGE);
-                return true;
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(VAsesor,
-                    "No se pudo completar el registro de asesor:\n" + ex.getMessage(),
-                    "Error de base de datos",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        return false;
+        return new AsesorDAO().saveAsesor(matricula, idUsuario);
     }
 
     private void configurarPlaceholder(JTextField campo, String textoGuia) {

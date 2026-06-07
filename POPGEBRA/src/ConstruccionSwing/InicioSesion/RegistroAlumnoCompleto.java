@@ -172,31 +172,7 @@ public class RegistroAlumnoCompleto {
     }
 
     private boolean registrarAlumno(String boleta, String grupo, String carrera) {
-        String sql = "INSERT INTO Alumno (Boleta, IdUsuario, IDGrupo, IdCarrera) VALUES (?, ?, ?, ?)";
-
-        try (Connection conexion = new MySQLConnect().conectarMySQL();
-             PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setString(1, boleta);
-            stmt.setString(2, idUsuario);
-            stmt.setString(3, grupo);
-            stmt.setString(4, carrera);
-
-            int filas = stmt.executeUpdate();
-            if (filas > 0) {
-                JOptionPane.showMessageDialog(VAlumno,
-                        "Registro de alumno completado correctamente.",
-                        "Registro exitoso",
-                        JOptionPane.INFORMATION_MESSAGE);
-                return true;
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(VAlumno,
-                    "No se pudo completar el registro de alumno:\n" + ex.getMessage(),
-                    "Error de base de datos",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        return false;
+        return new AlumnoDAO().saveAlumno(boleta, idUsuario, grupo, carrera);
     }
 
     private void configurarPlaceholder(JTextField campo, String textoGuia) {

@@ -8,6 +8,7 @@ package ConstruccionSwing;
  *
  * @author Saul
  */
+import ConstruccionSwing.InicioSesion.Login;
 import ConstruccionSwing.InicioSesion.RegistroUsuario;
 import Factories.BotonOvalado;
 import Factories.PanelRedondeado;
@@ -117,7 +118,8 @@ public class PantallaBienvenida extends JFrame {
 
         btnLogin.addActionListener(e -> {
             dispose();
-            new RegistroUsuario().Registro();
+            new Login().show();
+            
         });
         btnRegistro.addActionListener(e -> {
             dispose();

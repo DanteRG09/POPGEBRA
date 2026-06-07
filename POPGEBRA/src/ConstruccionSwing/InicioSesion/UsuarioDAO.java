@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class UsuarioDAO {
 
@@ -38,5 +39,28 @@ public class UsuarioDAO {
         }
 
         return false;
+    }
+
+    public String authenticateUser(String idUsuario, String contrasena) {
+        String sql = "SELECT TipoUsuario FROM Usuario WHERE IdUsuario = ? AND Contrasena = ?";
+
+        try (Connection conexion = new MySQLConnect().conectarMySQL();
+             PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, idUsuario);
+            stmt.setString(2, contrasena);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("TipoUsuario");
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Error al autenticar usuario:\n" + ex.getMessage(),
+                    "Error de base de datos",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        return null;
     }
 }

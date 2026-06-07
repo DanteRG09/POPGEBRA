@@ -8,8 +8,10 @@ package ConstruccionSwing;
  *
  * @author Saul
  */
+import ConstruccionSwing.InicioSesion.RegistroUsuario;
 import Factories.BotonOvalado;
 import Factories.PanelRedondeado;
+import GlobalConfig.TamañosColoresPosicion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,9 +20,12 @@ public class PantallaBienvenida extends JFrame {
 
     public PantallaBienvenida() {
 
+        TamañosColoresPosicion valores = new TamañosColoresPosicion();
+
         setTitle("POPGEBRA");
 
-        setSize(1600, 900);
+        setSize(valores.getTamañoVentana(0), valores.getTamañoVentana(1));
+        getContentPane().setBackground(Color.decode(valores.getColorFondo()));
 
         setLocationRelativeTo(null);
 
@@ -29,93 +34,16 @@ public class PantallaBienvenida extends JFrame {
 
    
 
-        JPanel principal =
-                new JPanel() {
-
-                    @Override
-                    protected void paintComponent(
-                            Graphics g) {
-
-                        super.paintComponent(g);
-
-                        Graphics2D g2 =
-                                (Graphics2D) g;
-
-                        GradientPaint gp =
-                                new GradientPaint(
-                                        0,
-                                        0,
-                                        Color.BLACK,
-                                        0,
-                                        getHeight(),
-                                        Color.LIGHT_GRAY);
-
-                        g2.setPaint(gp);
-
-                        g2.fillRect(
-                                0,
-                                0,
-                                getWidth(),
-                                getHeight());
-
-                        g2.setColor(
-                                new Color(
-                                        255,
-                                        255,
-                                        255,
-                                        60));
-
-                        g2.setFont(
-                                new Font(
-                                        "Arial",
-                                        Font.BOLD,
-                                        90));
-
-                        for (int y = -100;
-                             y < getHeight() + 200;
-                             y += 220) {
-
-                            for (int x = -200;
-                                 x < getWidth() + 200;
-                                 x += 400) {
-
-                                g2.rotate(
-                                        Math.toRadians(-35),
-                                        x,
-                                        y);
-
-                                g2.drawString(
-                                        "POPGEBRA",
-                                        x,
-                                        y);
-
-                                g2.rotate(
-                                        Math.toRadians(35),
-                                        x,
-                                        y);
-                            }
-                        }
-                    }
-                };
-
-        principal.setLayout(
-                new GridBagLayout());
+        JPanel principal = new JPanel(new GridBagLayout());
+        principal.setOpaque(false);
 
     
 
         PanelRedondeado tarjeta =
                 new PanelRedondeado(60);
 
-        tarjeta.setBackground(
-                new Color(
-                        255,
-                        220,
-                        0));
-
-        tarjeta.setPreferredSize(
-                new Dimension(
-                        650,
-                        650));
+        tarjeta.setBackground(Color.decode(valores.getColorPanel()));
+        tarjeta.setPreferredSize(valores.getPosicionDelPanelRegistro());
 
         tarjeta.setLayout(
                 new BoxLayout(
@@ -129,9 +57,9 @@ public class PantallaBienvenida extends JFrame {
 
         lblBienvenido.setFont(
                 new Font(
-                        "Arial",
+                        "Courier New",
                         Font.BOLD,
-                        58));
+                        45));
 
         lblBienvenido.setForeground(
                 Color.BLACK);
@@ -141,29 +69,39 @@ public class PantallaBienvenida extends JFrame {
 
     
 
-        JLabel lblLogo =
+        JLabel lblSubtitulo =
                 new JLabel(
-                        "POPGEBRA");
+                        "<html><div style='text-align:center;'>Inicia sesión o crea tu cuenta</div></html>");
 
-        lblLogo.setFont(
+        lblSubtitulo.setFont(
                 new Font(
-                        "Serif",
-                        Font.BOLD
-                                | Font.ITALIC,
-                        85));
+                        "Courier New",
+                        Font.PLAIN,
+                        25));
 
-        lblLogo.setForeground(
+        lblSubtitulo.setForeground(
                 Color.BLACK);
 
-        lblLogo.setAlignmentX(
+        lblSubtitulo.setAlignmentX(
                 Component.CENTER_ALIGNMENT);
+        lblSubtitulo.setHorizontalAlignment(
+                SwingConstants.CENTER);
+        lblSubtitulo.setMaximumSize(
+                new Dimension(
+                        380,
+                        100));
 
   
 
         JPanel panelBotones =
-                new JPanel();
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.CENTER,
+                                20,
+                                0));
 
         panelBotones.setOpaque(false);
+        panelBotones.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         BotonOvalado btnLogin =
                 new BotonOvalado(
@@ -176,6 +114,15 @@ public class PantallaBienvenida extends JFrame {
         configurarBoton(btnLogin);
 
         configurarBoton(btnRegistro);
+
+        btnLogin.addActionListener(e -> {
+            dispose();
+            new RegistroUsuario().Registro();
+        });
+        btnRegistro.addActionListener(e -> {
+            dispose();
+            new RegistroUsuario().Registro();
+        });
 
         panelBotones.add(btnLogin);
 
@@ -195,9 +142,9 @@ public class PantallaBienvenida extends JFrame {
 
         tarjeta.add(
                 Box.createVerticalStrut(
-                        50));
+                        20));
 
-        tarjeta.add(lblLogo);
+        tarjeta.add(lblSubtitulo);
 
         tarjeta.add(
                 Box.createVerticalGlue());

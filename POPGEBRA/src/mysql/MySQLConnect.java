@@ -9,12 +9,12 @@ import java.sql.SQLException;
  * @author santi
  */
 public class MySQLConnect {
-    
+
      // Librería de MySQL
     public String driver = "com.mysql.cj.jdbc.Driver";
 
     // Nombre de la base de datos
-    public String database = "databasemovies";
+    public String database = "popgebra"; // Cambia este nombre si tu base de datos tiene otro nombre
 
     // Host
     public String hostname = "localhost";

@@ -1,0 +1,352 @@
+create database POPGEBRA;
+
+use POPGEBRA;
+
+
+CREATE TABLE Semestre (
+    IdSemestre INT AUTO_INCREMENT PRIMARY KEY
+);
+
+
+INSERT INTO Semestre (IdSemestre) VALUES
+(1),
+(2),
+(3),
+(4),
+(5),
+(6);
+
+
+
+CREATE TABLE Grupo (
+    IDGrupo VARCHAR(10) PRIMARY KEY,
+    IDSemestre INT NOT NULL,
+
+    CONSTRAINT FK_Grupo_Semestre
+        FOREIGN KEY (IDSemestre)
+        REFERENCES Semestre(IdSemestre)
+);
+
+
+INSERT INTO Grupo (IDGrupo, IDSemestre) VALUES
+('1IM1', 1), ('1IM2', 1), ('1IM3', 1), ('1IM4', 1), ('1IM5', 1),
+('1IM6', 1), ('1IM7', 1), ('1IM8', 1), ('1IM9', 1), ('1IM10', 1),
+('1IV1', 1), ('1IV2', 1), ('1IV3', 1), ('1IV4', 1), ('1IV5', 1),
+('1IV6', 1), ('1IV7', 1), ('1IV8', 1), ('1IV9', 1), ('1IV10', 1),
+
+('2IM1', 2), ('2IM2', 2), ('2IM3', 2), ('2IM4', 2), ('2IM5', 2),
+('2IM6', 2), ('2IM7', 2), ('2IM8', 2), ('2IM9', 2), ('2IM10', 2),
+('2IV1', 2), ('2IV2', 2), ('2IV3', 2), ('2IV4', 2), ('2IV5', 2),
+('2IV6', 2), ('2IV7', 2), ('2IV8', 2), ('2IV9', 2), ('2IV10', 2),
+
+('3IM1', 3), ('3IM2', 3), ('3IM3', 3), ('3IM4', 3), ('3IM5', 3),
+('3IM6', 3), ('3IM7', 3), ('3IM8', 3), ('3IM9', 3), ('3IM10', 3),
+('3IV1', 3), ('3IV2', 3), ('3IV3', 3), ('3IV4', 3), ('3IV5', 3),
+('3IV6', 3), ('3IV7', 3), ('3IV8', 3), ('3IV9', 3), ('3IV10', 3),
+
+('4IM1', 4), ('4IM2', 4), ('4IM3', 4), ('4IM4', 4), ('4IM5', 4),
+('4IM6', 4), ('4IM7', 4), ('4IM8', 4), ('4IM9', 4), ('4IM10', 4),
+('4IV1', 4), ('4IV2', 4), ('4IV3', 4), ('4IV4', 4), ('4IV5', 4),
+('4IV6', 4), ('4IV7', 4), ('4IV8', 4), ('4IV9', 4), ('4IV10', 4),
+
+('5IM1', 5), ('5IM2', 5), ('5IM3', 5), ('5IM4', 5), ('5IM5', 5),
+('5IM6', 5), ('5IM7', 5), ('5IM8', 5), ('5IM9', 5), ('5IM10', 5),
+('5IV1', 5), ('5IV2', 5), ('5IV3', 5), ('5IV4', 5), ('5IV5', 5),
+('5IV6', 5), ('5IV7', 5), ('5IV8', 5), ('5IV9', 5), ('5IV10', 5),
+
+('6IM1', 6), ('6IM2', 6), ('6IM3', 6), ('6IM4', 6), ('6IM5', 6),
+('6IM6', 6), ('6IM7', 6), ('6IM8', 6), ('6IM9', 6), ('6IM10', 6),
+('6IV1', 6), ('6IV2', 6), ('6IV3', 6), ('6IV4', 6), ('6IV5', 6),
+('6IV6', 6), ('6IV7', 6), ('6IV8', 6), ('6IV9', 6), ('6IV10', 6);
+
+
+
+CREATE TABLE Carrera (
+    IdCarrera INT PRIMARY KEY,
+    NombreCarrera VARCHAR(100) NOT NULL,
+
+    CONSTRAINT UQ_Carrera_Nombre UNIQUE (NombreCarrera)
+);
+
+
+
+INSERT INTO Carrera (IdCarrera, NombreCarrera) VALUES
+(1, 'Programacion'),
+(2, 'Sistemas Digitales'),
+(3, 'Mecatronica');
+
+
+CREATE TABLE Usuario (
+    IdUsuario INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Contrasena VARCHAR(255) NOT NULL,
+    TipoUsuario VARCHAR(20) NOT NULL,
+
+    CHECK (TipoUsuario IN ('Alumno', 'Asesor','Admin'))
+);
+
+
+INSERT INTO Usuario 
+(Nombre, Apellido, Contrasena, TipoUsuario) 
+VALUES
+('Admin', 'root', 'root', 'Admin');
+
+CREATE TABLE Alumno (
+    Boleta VARCHAR(15)  PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    IDGrupo VARCHAR(5) NOT NULL,
+    IdCarrera INT NOT NULL,
+
+    CONSTRAINT FK_Alumno_Usuario
+        FOREIGN KEY (IdUsuario)
+        REFERENCES Usuario(IdUsuario),
+
+    CONSTRAINT FK_Alumno_Grupo
+        FOREIGN KEY (IDGrupo)
+        REFERENCES Grupo(IDGrupo),
+
+    CONSTRAINT FK_Alumno_Carrera
+        FOREIGN KEY (IdCarrera)
+        REFERENCES Carrera(IdCarrera),
+
+    CONSTRAINT UQ_Alumno_Usuario UNIQUE (Boleta)
+);
+
+
+INSERT INTO Alumno
+(Boleta, IdUsuario, IDGrupo, IdCarrera)
+VALUES
+('2024090123', 1, '1IM1', 1);
+
+
+
+CREATE TABLE Asesor (
+    Matricula VARCHAR(15) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+
+    CONSTRAINT FK_Asesor_Usuario
+        FOREIGN KEY (IdUsuario)
+        REFERENCES Usuario(IdUsuario),
+
+    CONSTRAINT UQ_Asesor_Usuario UNIQUE (Matricula)
+);
+
+INSERT INTO Asesor (Matricula, IdUsuario)
+VALUES ('ASESOR001', 2);
+
+
+CREATE TABLE Materia (
+    IdMateria INT PRIMARY KEY,
+    NombreMateria VARCHAR(100) NOT NULL,
+    IdSemestre INT NOT NULL,
+
+    CONSTRAINT FK_Materia_Semestre
+        FOREIGN KEY (IdSemestre)
+        REFERENCES Semestre(IdSemestre),
+
+    CONSTRAINT UQ_Materia_Semestre
+        UNIQUE (NombreMateria, IdSemestre)
+);
+
+INSERT INTO Materia (IdMateria, NombreMateria, IdSemestre) VALUES
+(1, 'Álgebra', 1),
+(2, 'Programación I', 1),
+(3, 'Comunicación Oral y Escrita', 1),
+(4, 'Geometría Analítica', 2),
+(5, 'Programación II', 2),
+(6, 'Base de Datos', 3);
+
+
+CREATE TABLE MateriasImpartidas (
+    IdMateriaImpartida INT PRIMARY KEY,
+    IdMateria INT NOT NULL,
+    Matricula VARCHAR(15) NOT NULL,
+
+    CONSTRAINT FK_MateriasImpartidas_Materia
+        FOREIGN KEY (IdMateria)
+        REFERENCES Materia(IdMateria),
+
+    CONSTRAINT FK_MateriasImpartidas_Asesor
+        FOREIGN KEY (Matricula)
+        REFERENCES Asesor(Matricula)
+);
+
+INSERT INTO MateriasImpartidas 
+(IdMateriaImpartida, IdMateria, Matricula)
+VALUES
+(1, 1, 'ASESOR001'),
+(2, 2, 'ASESOR001'),
+(3, 6, 'ASESOR001');
+
+CREATE TABLE Asesorias (
+    IdAsesoria INT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    PeriodoEscolar VARCHAR(7) NOT NULL,
+    CupoDisponible INT NOT NULL,
+    FechaIni DATE NOT NULL,
+    FechaFin DATE NOT NULL,
+    StatusActiva BOOLEAN NOT NULL,
+    StatusHorario BOOLEAN NOT NULL,
+    IdMateriaImpartida INT NOT NULL,
+
+    CONSTRAINT FK_Asesorias_MateriasImpartidas
+        FOREIGN KEY (IdMateriaImpartida)
+        REFERENCES MateriasImpartidas(IdMateriaImpartida),
+
+    CONSTRAINT CHK_Asesorias_Fechas
+        CHECK (FechaFin >= FechaIni)
+);
+
+
+CREATE TABLE Horarios (
+    IdHorario INT PRIMARY KEY,
+    HorarioIni TIME NOT NULL,
+    HorarioFin TIME NOT NULL,
+    DiasAsignados VARCHAR(20) NOT NULL,
+    IdAsesoria INT NOT NULL,
+
+    CONSTRAINT FK_Horarios_Asesorias
+        FOREIGN KEY (IdAsesoria)
+        REFERENCES Asesorias(IdAsesoria),
+
+    CONSTRAINT CHK_Horarios_Hora
+        CHECK (HorarioFin > HorarioIni)
+);
+
+
+CREATE TABLE Cuestionarios (
+    IdCuestionario INT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    FechaCreacion DATE NOT NULL,
+    Matricula VARCHAR(15) NOT NULL,
+
+    CONSTRAINT FK_Cuestionarios_Asesor
+        FOREIGN KEY (Matricula)
+        REFERENCES Asesor(Matricula)
+);
+
+
+
+CREATE TABLE TipoPregunta (
+    IdTipoPregunta INT PRIMARY KEY,
+    TipoPregunta VARCHAR(50) NOT NULL,
+
+    CONSTRAINT UQ_TipoPregunta UNIQUE (TipoPregunta)
+);
+
+CREATE TABLE Preguntas (
+    IdPregunta INT PRIMARY KEY,
+    NumeroPregunta INT NOT NULL,
+    Pregunta VARCHAR(255) NOT NULL,
+    IdTipoPregunta INT NOT NULL,
+    IdCuestionario INT NOT NULL,
+
+    CONSTRAINT FK_Preguntas_Cuestionarios
+        FOREIGN KEY (IdCuestionario)
+        REFERENCES Cuestionarios(IdCuestionario),
+
+    CONSTRAINT FK_Preguntas_TipoPregunta
+        FOREIGN KEY (IdTipoPregunta)
+        REFERENCES TipoPregunta(IdTipoPregunta),
+
+    CONSTRAINT UQ_Pregunta_Cuestionario
+        UNIQUE (IdCuestionario, NumeroPregunta)
+);
+
+
+
+CREATE TABLE Respuestas (
+    IdRespuesta INT PRIMARY KEY,
+    IdPregunta INT NOT NULL,
+    Respuesta VARCHAR(255) NOT NULL,
+
+    CONSTRAINT FK_Respuestas_Preguntas
+        FOREIGN KEY (IdPregunta)
+        REFERENCES Preguntas(IdPregunta)
+);
+
+
+
+CREATE TABLE RespuestasCorrectas (
+    IdRespuestaCorrecta INT PRIMARY KEY,
+    IdPregunta INT NOT NULL,
+    IdRespuesta INT NOT NULL,
+
+    CONSTRAINT FK_RespuestasCorrectas_Preguntas
+        FOREIGN KEY (IdPregunta)
+        REFERENCES Preguntas(IdPregunta),
+
+    CONSTRAINT FK_RespuestasCorrectas_Respuestas
+        FOREIGN KEY (IdRespuesta)
+        REFERENCES Respuestas(IdRespuesta),
+
+    CONSTRAINT UQ_RespuestaCorrecta_Pregunta
+        UNIQUE (IdPregunta, IdRespuesta)
+);
+
+
+
+CREATE TABLE AlumnosAsesoriasCuestionario (
+    IdAlumnosAsesoriasCuestionario INT PRIMARY KEY,
+    Boleta VARCHAR(15) NOT NULL,
+    IdAsesoria INT NOT NULL,
+    IdCuestionario INT NOT NULL,
+
+    CONSTRAINT FK_AAC_Alumno
+        FOREIGN KEY (Boleta)
+        REFERENCES Alumno(Boleta),
+
+    CONSTRAINT FK_AAC_Asesoria
+        FOREIGN KEY (IdAsesoria)
+        REFERENCES Asesorias(IdAsesoria),
+
+    CONSTRAINT FK_AAC_Cuestionario
+        FOREIGN KEY (IdCuestionario)
+        REFERENCES Cuestionarios(IdCuestionario)
+);
+
+
+CREATE TABLE CalificacionPregunta (
+    IdCalifPreg INT PRIMARY KEY,
+    OpSelect VARCHAR(255) NOT NULL,
+    Validacion BOOLEAN NOT NULL,
+    IdAlumnosAsesoriasCuestionario INT NOT NULL,
+    IdPregunta INT NOT NULL,
+
+    CONSTRAINT FK_Calificacion_AAC
+        FOREIGN KEY (IdAlumnosAsesoriasCuestionario)
+        REFERENCES AlumnosAsesoriasCuestionario(IdAlumnosAsesoriasCuestionario),
+
+    CONSTRAINT FK_Calificacion_Pregunta
+        FOREIGN KEY (IdPregunta)
+        REFERENCES Preguntas(IdPregunta),
+
+    CONSTRAINT UQ_Calificacion_AlumnoCuestionario_Pregunta
+        UNIQUE (IdAlumnosAsesoriasCuestionario, IdPregunta)
+);
+
+
+
+CREATE TABLE Valoración (
+	IdValoracion INT PRIMARY KEY,
+	Likes INT NULL,
+	DisLikes INT NULL,
+        IdUsuario INT NOT NULL,
+	
+	CONSTRAINT FK_Alumno_Valoracion
+        FOREIGN KEY (IdUsuario)
+        REFERENCES Usuario(IdUsuario)
+);
+	 
+
+
+
+
+
+INSERT INTO Usuario 
+(Nombre, Apellido, Contrasena, TipoUsuario) 
+VALUES
+('Admin', 'root', 'root', 'Admin');
+
+

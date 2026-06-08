@@ -1,7 +1,7 @@
 package ConstruccionSwing.InicioSesion;
 
 import ConstruccionSwing.AdminHome;
-import ConstruccionSwing.PopGebraAsesorias;
+import ConstruccionSwing.AsesorHome;
 import ConstruccionSwing.PopGebraUI;
 import Factories.JComponentOval;
 import Factories.JComponentOvalBtn;
@@ -43,6 +43,18 @@ public class Login {
         BTNIngresar = new JComponentOvalBtn(30);
         BTNIngresar.setText("INGRESAR");
 
+        JComponentOvalBtn BTNRegistro = new JComponentOvalBtn(30);
+        BTNRegistro.setText("REGISTRARSE");
+        BTNRegistro.setPreferredSize(new Dimension(200, 50));
+        BTNRegistro.setBackground(new Color(220, 80, 80));
+        BTNRegistro.setForeground(Color.WHITE);
+
+        JComponentOvalBtn BTNVolver = new JComponentOvalBtn(30);
+        BTNVolver.setText("VOLVER");
+        BTNVolver.setPreferredSize(new Dimension(200, 50));
+        BTNVolver.setBackground(new Color(160, 160, 160));
+        BTNVolver.setForeground(Color.WHITE);
+
         TXTFUsuario.setHorizontalAlignment(JTextField.CENTER);
         PWFContrasena.setHorizontalAlignment(JTextField.CENTER);
         BTNIngresar.setPreferredSize(new Dimension(200, 50));
@@ -70,10 +82,25 @@ public class Login {
         c.insets = new Insets(20, 0, 0, 0);
         contenedorFormulario.add(BTNIngresar, c);
 
+        c.gridy = 4;
+        c.insets = new Insets(10, 0, 0, 0);
+        contenedorFormulario.add(BTNRegistro, c);
+
+        c.gridy = 5;
+        contenedorFormulario.add(BTNVolver, c);
+
         InterfazLogin.add(contenedorFormulario);
         VLogin.add(InterfazLogin);
 
         BTNIngresar.addActionListener(e -> authenticateAndRoute());
+        BTNRegistro.addActionListener(e -> {
+            VLogin.dispose();
+            new RegistroUsuario().Registro();
+        });
+        BTNVolver.addActionListener(e -> {
+            VLogin.dispose();
+            new ConstruccionSwing.PantallaBienvenida().setVisible(true);
+        });
 
         VLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         VLogin.setVisible(true);
@@ -105,7 +132,7 @@ public class Login {
         if (tipo.equalsIgnoreCase("Alumno")) {
             new PopGebraUI().setVisible(true);
         } else if (tipo.equalsIgnoreCase("Asesor")) {
-            new PopGebraAsesorias().setVisible(true);
+            new AsesorHome(usuario).setVisible(true);
         } else if (tipo.equalsIgnoreCase("Administrador") || tipo.equalsIgnoreCase("Admin")) {
             new AdminHome().setVisible(true);
         } else {

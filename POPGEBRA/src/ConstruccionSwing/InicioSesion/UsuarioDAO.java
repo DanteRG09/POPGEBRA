@@ -41,20 +41,28 @@ public class UsuarioDAO {
         return false;
     }
 
-    public String authenticateUser(String idUsuario, String contrasena) {
-        String sql = "SELECT TipoUsuario FROM Usuario WHERE IdUsuario = ? AND Contrasena = ?";
+    public String authenticateUser(String idUsuarioOrNombre, String contrasena) {
+        String sql = "SELECT TipoUsuario FROM Usuario WHERE (IdUsuario = ? OR Nombre = ?) AND Contrasena = ?";
+        System.out.println("[Login] Intentando autenticar: " + idUsuarioOrNombre);
 
         try (Connection conexion = new MySQLConnect().conectarMySQL();
              PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setString(1, idUsuario);
-            stmt.setString(2, contrasena);
+            stmt.setString(1, idUsuarioOrNombre);
+            stmt.setString(2, idUsuarioOrNombre);
+            stmt.setString(3, contrasena);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("TipoUsuario");
+                    String tipo = rs.getString("TipoUsuario");
+                    System.out.println("[Login] Autenticación exitosa, tipoUsuario=" + tipo);
+                    return tipo;
+                } else {
+                    System.out.println("[Login] Autenticación fallida: credenciales no coinciden");
                 }
             }
         } catch (SQLException ex) {
+            System.out.println("[Login] Error al autenticar usuario: " + ex.getMessage());
+            ex.printStackTrace(System.out);
             JOptionPane.showMessageDialog(null,
                     "Error al autenticar usuario:\n" + ex.getMessage(),
                     "Error de base de datos",

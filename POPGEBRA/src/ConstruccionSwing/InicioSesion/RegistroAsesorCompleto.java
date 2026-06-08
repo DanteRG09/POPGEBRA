@@ -1,6 +1,6 @@
 package ConstruccionSwing.InicioSesion;
 
-import ConstruccionSwing.PopGebraAsesorias;
+import ConstruccionSwing.AsesorHome;
 import mysql.MySQLConnect;
 
 import javax.swing.*;
@@ -77,7 +77,7 @@ public class RegistroAsesorCompleto {
         btnGuardar.addActionListener(e -> {
             if (registrarAsesor(idUsuario)) {
                 VAsesor.dispose();
-                new PopGebraAsesorias().setVisible(true);
+                new AsesorHome(idUsuario).setVisible(true);
             }
         });
 
